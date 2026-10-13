@@ -6,8 +6,6 @@
 [![Fastify](https://img.shields.io/badge/Fastify-v5-black?style=flat-square&logo=fastify)](https://fastify.dev/)
 [![Bun](https://img.shields.io/badge/Runtime-Bun-f472b6?style=flat-square&logo=bun)](https://bun.sh/)
 [![TypeScript](https://img.shields.io/badge/Language-TypeScript-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
-[![ESM](<https://img.shields.io/badge/Modules-ESM%20(type%3A%20module)-yellow?style=flat-square>)](https://nodejs.org/api/esm.html)
-[![Inbuilt Scraper](<https://img.shields.io/badge/GitHub%20Scraper-Inbuilt%20(No%20Third--Party%20API)-green?style=flat-square&logo=github>)](https://github.com/nishur31/github-contributions-api)
 
 ---
 
