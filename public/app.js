@@ -22,6 +22,17 @@ const state = {
   embedTab: 'markdown'
 };
 
+// Theme Wire Palettes for UI Synchronization
+const THEME_WIRE_COLORS = {
+  breadboard: ['#162330', '#2563eb', '#eab308', '#22c55e', '#ef4444'],
+  pcb: ['#0d2617', '#15803d', '#16a34a', '#22c55e', '#4ade80'],
+  cyberpunk: ['#1f1038', '#06b6d4', '#ec4899', '#eab308', '#a855f7'],
+  amber: ['#241508', '#78350f', '#b45309', '#d97706', '#f59e0b'],
+  matrix: ['#071c0c', '#15803d', '#16a34a', '#22c55e', '#4ade80'],
+  solarized: ['#0a404f', '#268bd2', '#b58900', '#2aa198', '#cb4b16'],
+  monochrome: ['#1f1f26', '#52525b', '#71717a', '#a1a1aa', '#f4f4f5']
+};
+
 // DOM Elements
 const $ = sel => document.querySelector(sel);
 const $$ = sel => document.querySelectorAll(sel);
@@ -57,7 +68,6 @@ const statActive = $('#statActive');
 const statPeak = $('#statPeak');
 const statRatio = $('#statRatio');
 const liveUserBadge = $('#liveUserBadge');
-
 const downloadBtn = $('#downloadBtn');
 
 /**
@@ -101,10 +111,8 @@ function init() {
     tab.classList.toggle('active', tab.dataset.format === state.format);
   });
 
-  // Attach event listeners
+  updateWireHierarchyUI();
   setupEvents();
-
-  // Load preview & telemetry
   refresh();
 }
 
@@ -113,16 +121,43 @@ function updateDensityLabel() {
   densityVal.textContent = labels[state.density] || 'Medium';
 }
 
+function updateWireHierarchyUI() {
+  const colors = THEME_WIRE_COLORS[state.theme] || THEME_WIRE_COLORS.breadboard;
+  const chips = $$('#wire-guide .wire-chip .wire-indicator');
+  if (chips.length >= 5) {
+    // 0=Idle, 1=Blue/Low, 2=Yellow/Clk, 3=Green/Data, 4=Red/VCC
+    chips[0].style.background = colors[4];
+    chips[0].style.color = colors[4];
+    chips[1].style.background = colors[3];
+    chips[1].style.color = colors[3];
+    chips[2].style.background = colors[2];
+    chips[2].style.color = colors[2];
+    chips[3].style.background = colors[1];
+    chips[3].style.color = colors[1];
+    chips[4].style.background = colors[0];
+    chips[4].style.color = colors[0];
+  }
+}
+
 function setupEvents() {
-  // Input changes
   $('#workbenchForm').addEventListener('submit', e => {
     e.preventDefault();
     state.user = userInput.value.trim().replace(/^@/, '') || 'octocat';
     refresh();
   });
 
+  userInput.addEventListener('input', () => {
+    state.user = userInput.value.trim().replace(/^@/, '') || 'octocat';
+    liveUserBadge.textContent = `@${state.user}`;
+    refreshDebounced();
+  });
+
   yearSelect.addEventListener('change', () => { state.year = yearSelect.value; refresh(); });
-  themeSelect.addEventListener('change', () => { state.theme = themeSelect.value; refresh(); });
+  themeSelect.addEventListener('change', () => {
+    state.theme = themeSelect.value;
+    updateWireHierarchyUI();
+    refresh();
+  });
   wireModeSelect.addEventListener('change', () => { state.wireMode = wireModeSelect.value; refresh(); });
   nodeStyleSelect.addEventListener('change', () => { state.nodeStyle = nodeStyleSelect.value; refresh(); });
 
@@ -184,31 +219,43 @@ function setupEvents() {
   copySnippetBtn.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(snippetText.value);
-      showToast('Copied code snippet to clipboard!');
+      showToast('Copied snippet to clipboard');
     } catch {
       snippetText.select();
       document.execCommand('copy');
-      showToast('Copied code snippet to clipboard!');
+      showToast('Copied snippet to clipboard');
     }
   });
 
-  // Download Button
-  downloadBtn.addEventListener('click', () => {
+  // Robust Direct Blob Download Button
+  downloadBtn.addEventListener('click', async () => {
     const url = buildApiUrl();
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `commit-circuit-${state.user}-${state.year}.${state.format}`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    const fileName = `commit-circuit-${state.user}-${state.year}.${state.format}`;
     showToast(`Downloading ${state.format.toUpperCase()}...`);
+
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Download failed');
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 2000);
+    } catch (err) {
+      console.warn('Fallback direct navigation download:', err);
+      window.open(url, '_blank');
+    }
   });
 }
 
 let debounceTimer = null;
 function refreshDebounced() {
   clearTimeout(debounceTimer);
-  debounceTimer = setTimeout(() => refresh(), 300);
+  debounceTimer = setTimeout(() => refresh(), 350);
 }
 
 /**
@@ -259,7 +306,6 @@ async function refresh() {
   const apiUrl = buildApiUrl();
 
   if (state.format === 'svg') {
-    // Render SVG inline for interactive hover
     try {
       const res = await fetch(apiUrl);
       const svgText = await res.text();
@@ -273,7 +319,6 @@ async function refresh() {
       previewLoading.classList.remove('active');
     }
   } else {
-    // GIF or PNG
     previewSvgWrap.style.display = 'none';
     previewImg.style.display = 'block';
 
@@ -284,12 +329,11 @@ async function refresh() {
     };
     tempImg.onerror = () => {
       previewLoading.classList.remove('active');
-      showToast('Error loading circuit image.');
+      showToast('Error loading circuit image');
     };
     tempImg.src = apiUrl;
   }
 
-  // Fetch telemetry in background
   fetchTelemetry();
 }
 
@@ -310,10 +354,8 @@ async function fetchTelemetry() {
 }
 
 function updateSnippet() {
-  const origin = window.location.origin;
   const gifUrl = buildApiUrl('gif');
   const pngUrl = buildApiUrl('png');
-  const svgUrl = buildApiUrl('svg');
 
   const cleanUser = state.user;
   const targetUrl = `https://github.com/${cleanUser}`;
@@ -343,13 +385,17 @@ function attachSvgHoverEffects() {
   const svg = previewSvgWrap.querySelector('svg');
   if (!svg) return;
 
-  const tooltip = document.createElement('div');
-  tooltip.className = 'circuit-tooltip';
-  tooltip.style.cssText = 'position:fixed;display:none;background:#0d1822;border:1px solid #38bdf8;color:#f0f6fc;padding:6px 10px;border-radius:6px;font-family:monospace;font-size:11px;pointer-events:none;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,0.6);';
-  document.body.appendChild(tooltip);
+  // Reuse single tooltip instance
+  let tooltip = document.querySelector('.circuit-tooltip');
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.className = 'circuit-tooltip';
+    tooltip.style.cssText = 'position:fixed;display:none;background:#0d1822;border:1px solid #38bdf8;color:#f0f6fc;padding:6px 10px;border-radius:6px;font-family:monospace;font-size:11px;pointer-events:none;z-index:999;box-shadow:0 8px 24px rgba(0,0,0,0.6);';
+    document.body.appendChild(tooltip);
+  }
 
-  svg.querySelectorAll('.cell, rect, circle').forEach(el => {
-    el.addEventListener('mouseenter', e => {
+  svg.querySelectorAll('[data-date]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
       const date = el.getAttribute('data-date');
       const count = el.getAttribute('data-count');
       if (date) {
@@ -359,8 +405,8 @@ function attachSvgHoverEffects() {
     });
 
     el.addEventListener('mousemove', e => {
-      tooltip.style.left = `${e.clientX + 14}px`;
-      tooltip.style.top = `${e.clientY + 14}px`;
+      tooltip.style.left = `${Math.min(window.innerWidth - 180, e.clientX + 14)}px`;
+      tooltip.style.top = `${Math.min(window.innerHeight - 60, e.clientY + 14)}px`;
     });
 
     el.addEventListener('mouseleave', () => {
@@ -375,5 +421,4 @@ function showToast(msg) {
   setTimeout(() => toastEl.classList.remove('show'), 2400);
 }
 
-// Start
 document.addEventListener('DOMContentLoaded', init);
