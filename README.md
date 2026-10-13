@@ -86,7 +86,7 @@ The circuit employs an authentic electronics breadboard signal hierarchy where w
 </a>
 ```
 
-#### 3. Direct URLs Exaples
+#### 3. Direct URLs Examples 
 
 - **Animated GIF**: `http://localhost:3000/octocat.gif`
 - **Crisp Retina PNG**: `http://localhost:3000/octocat.png?scale=2`
