@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#060a0d">
+  <meta name="description" content="Generate dynamic GitHub contribution electronic circuit boards as animated GIF or high-res PNG via Fastify API. Powered by real breadboard wire connections.">
+  <title>Commit Circuit — Electronic GitHub Contribution Generator</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="/public/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23060a0d'/%3E%3Cpath d='M10 24h14v16h16V16h14M10 48h14V36h14v16h16' fill='none' stroke='%2338bdf8' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='24' cy='24' r='4' fill='%23ef4444'/%3E%3Ccircle cx='40' cy='40' r='4' fill='%2322c55e'/%3E%3C/svg%3E">
+</head>
+<body>
+
+  <div class="container">
+    <!-- Top Navigation -->
+    <header class="header-nav">
+      <div class="brand">
+        <div class="brand-chip">
+          <span class="brand-icon">⌁</span>
+        </div>
+        <div class="brand-text">
+          <h1>commit<span>.circuit</span> <span class="brand-badge">FASTIFY SERVER</span></h1>
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#workbench" class="nav-link">Workbench</a>
+        <a href="#wire-guide" class="nav-link">Wire Logic</a>
+        <a href="#api-docs" class="nav-link">API Docs</a>
+        <div class="nav-status">
+          <span class="nav-dot"></span>
+          <span>SIGNAL SERVER READY</span>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-tagline">
+        <span>⚡ Hardware Telemetry & Profile Artwork</span>
+      </div>
+      <h2 class="hero-title">
+        Turn your code history into a <br><span class="gradient-text">living electronic circuit.</span>
+      </h2>
+      <p class="hero-desc">
+        A high-performance Fastify web server generating animated <b>GIF</b> and crisp <b>PNG</b> circuits from your GitHub contributions. Dynamic jumper wires connect your active streak nodes with authentic electrical hierarchy.
+      </p>
+
+      <!-- Wire Hierarchy Strip -->
+      <div class="wire-hierarchy-strip" id="wire-guide">
+        <div class="wire-chip">
+          <span class="wire-indicator" style="background:var(--wire-red); color:var(--wire-red)"></span>
+          <span><b>+5V VCC</b> · 9+ Commits (Red Wire)</span>
+        </div>
+        <div class="wire-chip">
+          <span class="wire-indicator" style="background:var(--wire-green); color:var(--wire-green)"></span>
+          <span><b>DATA</b> · 6–8 Commits (Green Wire)</span>
+        </div>
+        <div class="wire-chip">
+          <span class="wire-indicator" style="background:var(--wire-yellow); color:var(--wire-yellow)"></span>
+          <span><b>CLOCK</b> · 3–5 Commits (Yellow Wire)</span>
+        </div>
+        <div class="wire-chip">
+          <span class="wire-indicator" style="background:var(--wire-blue); color:var(--wire-blue)"></span>
+          <span><b>LOGIC LOW</b> · 1–2 Commits (Blue Wire)</span>
+        </div>
+        <div class="wire-chip">
+          <span class="wire-indicator" style="background:var(--wire-idle); color:var(--wire-idle); border:1px solid #324658"></span>
+          <span><b>IDLE PAD</b> · 0 Commits</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Studio / Workbench -->
+    <main class="workbench-grid" id="workbench">
+      <!-- Control Rack Sidebar -->
+      <aside class="panel-card">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            <span>Control Rack</span>
+          </div>
+          <span style="font-family:var(--font-mono); font-size:10px; color:var(--text-dim);">REV 3.2</span>
+        </div>
+
+        <form id="workbenchForm" class="panel-body">
+          <!-- Username Input -->
+          <div class="control-group">
+            <label class="control-label" for="userInput">
+              <span>GitHub Username</span>
+              <span class="control-val" id="liveUserBadge">@octocat</span>
+            </label>
+            <div class="input-with-icon">
+              <span>@</span>
+              <input id="userInput" class="input-text" type="text" value="octocat" placeholder="github-username" autocomplete="off" required>
+            </div>
+            <div class="sample-users">
+              <span class="sample-chip" data-user="octocat">octocat</span>
+              <span class="sample-chip" data-user="torvalds">torvalds</span>
+              <span class="sample-chip" data-user="shadcn">shadcn</span>
+              <span class="sample-chip" data-user="leerob">leerob</span>
+              <span class="sample-chip" data-user="antfu">antfu</span>
+            </div>
+          </div>
+
+          <!-- Contribution Period -->
+          <div class="control-group">
+            <label class="control-label" for="yearSelect">Contribution Period</label>
+            <select id="yearSelect" class="select-box">
+              <option value="last">Last 12 Months</option>
+              <option value="2026">Year 2026</option>
+              <option value="2025">Year 2025</option>
+              <option value="2024">Year 2024</option>
+              <option value="2023">Year 2023</option>
+              <option value="2022">Year 2022</option>
+            </select>
+          </div>
+
+          <!-- Wire Connection Architecture -->
+          <div class="control-group">
+            <label class="control-label" for="wireModeSelect">Wire Connection Mode</label>
+            <select id="wireModeSelect" class="select-box">
+              <option value="hybrid">⚡ Hybrid (Bus Rails + Jumpers + PCB)</option>
+              <option value="jumper">➰ Curved Breadboard Jumper Wires</option>
+              <option value="pcb">📐 45° Solder-mask PCB Traces</option>
+              <option value="bus">🔌 Dual-Rail Bus (+5V & GND Drops)</option>
+              <option value="streak">🔥 Continuous Streak Signal Lines</option>
+            </select>
+          </div>
+
+          <!-- Board Color Theme -->
+          <div class="control-group">
+            <label class="control-label" for="themeSelect">Board Theme</label>
+            <select id="themeSelect" class="select-box">
+              <option value="breadboard">Breadboard Pro (Red/Blue/Green/Yellow)</option>
+              <option value="pcb">Industrial Green PCB (FR4 & Copper)</option>
+              <option value="cyberpunk">Cyberpunk Neon (Cyan/Pink/Purple)</option>
+              <option value="amber">Vintage Amber CRT (1980s Phosphor)</option>
+              <option value="matrix">Matrix Digital Rain (Terminal Green)</option>
+              <option value="solarized">Solarized Dark (Precision Teal)</option>
+              <option value="monochrome">Stealth Titanium (Monochrome Silver)</option>
+            </select>
+          </div>
+
+          <!-- Node Style -->
+          <div class="control-group">
+            <label class="control-label" for="nodeStyleSelect">Circuit Node Style</label>
+            <select id="nodeStyleSelect" class="select-box">
+              <option value="led">Glowing Dome LED Indicator</option>
+              <option value="smd">Square SMD Solder Fillet</option>
+              <option value="pad">Through-Hole Copper Drill Ring</option>
+              <option value="hex">Futuristic Hex Terminal</option>
+            </select>
+          </div>
+
+          <!-- Trace Density Slider -->
+          <div class="control-group">
+            <div class="control-label">
+              <label for="densityRange">Wire Trace Density</label>
+              <span class="control-val" id="densityVal">Medium</span>
+            </div>
+            <input id="densityRange" type="range" min="1" max="4" value="2" step="1">
+          </div>
+
+          <!-- Glow Intensity Slider -->
+          <div class="control-group">
+            <div class="control-label">
+              <label for="glowRange">Aura Glow Intensity</label>
+              <span class="control-val" id="glowVal">70%</span>
+            </div>
+            <input id="glowRange" type="range" min="0" max="100" value="70" step="5">
+          </div>
+
+          <!-- Animated GIF Parameters -->
+          <div class="control-group" id="gifControls">
+            <label class="control-label" for="speedSelect">GIF Pulse Speed</label>
+            <select id="speedSelect" class="select-box">
+              <option value="normal">Normal (11 fps)</option>
+              <option value="fast">Fast Hyper-clock (16 fps)</option>
+              <option value="slow">Slow Ambient Wave (8 fps)</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <div class="control-label">
+              <label for="framesRange">GIF Loop Frames</label>
+              <span class="control-val" id="framesVal">10 frames</span>
+            </div>
+            <input id="framesRange" type="range" min="8" max="16" value="10" step="2">
+          </div>
+
+          <!-- Feature Toggles -->
+          <div class="toggle-grid">
+            <label class="toggle-item">
+              <span>Stats Header</span>
+              <input id="toggleStats" type="checkbox" checked>
+            </label>
+            <label class="toggle-item">
+              <span>Month Labels</span>
+              <input id="toggleMonths" type="checkbox" checked>
+            </label>
+            <label class="toggle-item">
+              <span>Day Labels</span>
+              <input id="toggleDays" type="checkbox" checked>
+            </label>
+            <label class="toggle-item">
+              <span>Wire Legend</span>
+              <input id="toggleLegend" type="checkbox" checked>
+            </label>
+            <label class="toggle-item" style="grid-column: 1 / -1;">
+              <span>Silkscreen IC Chip Package</span>
+              <input id="toggleChip" type="checkbox" checked>
+            </label>
+          </div>
+
+          <!-- Primary Submit Button -->
+          <button type="submit" class="btn btn-primary" style="width:100%; margin-top:8px;">
+            <span>⚡ Compile Signal Circuit</span>
+          </button>
+        </form>
+      </aside>
+
+      <!-- Preview Column -->
+      <section class="preview-column">
+        <!-- Live Viewport Card -->
+        <div class="panel-card preview-card">
+          <!-- Toolbar -->
+          <div class="preview-toolbar">
+            <div class="format-tabs">
+              <button class="format-tab active" data-format="gif">ANIMATED GIF</button>
+              <button class="format-tab" data-format="png">CRISP PNG</button>
+              <button class="format-tab" data-format="svg">VECTOR SVG</button>
+            </div>
+
+            <div class="export-actions">
+              <button id="downloadBtn" class="btn btn-secondary" style="padding:6px 14px; font-size:12px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                <span>Download</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Viewport -->
+          <div class="preview-viewport">
+            <div id="previewLoading" class="preview-loading">
+              <div class="loading-spinner">
+                <div class="pulse-ring"></div>
+                <span>ROUTING CIRCUIT TRACES…</span>
+              </div>
+            </div>
+
+            <!-- Raster image preview (GIF/PNG) -->
+            <img id="previewImg" src="/api/circuit.gif?user=octocat&theme=breadboard" alt="GitHub Contribution Circuit Preview">
+
+            <!-- Vector inline SVG preview (Interactive) -->
+            <div id="previewSvgWrap" style="display:none; width:100%;"></div>
+          </div>
+
+          <!-- Telemetry Bar -->
+          <div class="telemetry-bar">
+            <div class="stat-box">
+              <small>TOTAL COMMITS</small>
+              <strong id="statTotal">—</strong>
+            </div>
+            <div class="stat-box">
+              <small>ACTIVE DAYS</small>
+              <strong id="statActive">—</strong>
+            </div>
+            <div class="stat-box">
+              <small>PEAK FREQUENCY</small>
+              <strong id="statPeak">—</strong>
+            </div>
+            <div class="stat-box">
+              <small>SIGNAL RATIO</small>
+              <strong id="statRatio">—</strong>
+            </div>
+          </div>
+        </div>
+
+        <!-- Embed & Share Box -->
+        <div class="panel-card embed-card">
+          <div class="panel-header" style="background:transparent; padding:0 0 14px; border-bottom:none;">
+            <div class="panel-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              <span>Embed Your Circuit in GitHub Profile</span>
+            </div>
+          </div>
+
+          <div class="embed-tabs">
+            <button class="embed-tab active" data-type="markdown">Markdown Badge</button>
+            <button class="embed-tab" data-type="html">HTML Tag</button>
+            <button class="embed-tab" data-type="direct">Direct URL</button>
+            <button class="embed-tab" data-type="png">Static PNG</button>
+          </div>
+
+          <div class="snippet-container">
+            <input id="snippetText" class="snippet-code" readonly value="Loading snippet...">
+            <button id="copySnippetBtn" class="btn btn-secondary" style="padding:6px 12px; font-size:11px;">
+              <span>Copy</span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Comprehensive API Documentation Section -->
+    <section class="doc-section" id="api-docs">
+      <div class="section-head">
+        <h2>Fastify API Documentation</h2>
+        <p>Embed dynamically generated contribution circuits anywhere on the web using straightforward HTTP endpoints.</p>
+      </div>
+
+      <div class="doc-grid">
+        <!-- Card 1: Direct Clean Endpoints -->
+        <div class="doc-card">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <span>Direct Vanity Routes</span>
+          </h3>
+          <p>You can fetch images directly by username and extension without touching query parameters:</p>
+          <table class="param-table">
+            <tr>
+              <td><code>/:user.gif</code></td>
+              <td>Animated GIF circuit (e.g. <code>/torvalds.gif</code>)</td>
+            </tr>
+            <tr>
+              <td><code>/:user.png</code></td>
+              <td>Crisp high-resolution PNG (e.g. <code>/shadcn.png</code>)</td>
+            </tr>
+            <tr>
+              <td><code>/:user.svg</code></td>
+              <td>Scalable vector SVG (e.g. <code>/octocat.svg</code>)</td>
+            </tr>
+            <tr>
+              <td><code>/api/data?user=...</code></td>
+              <td>JSON telemetry with streaks, counts, and active days</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Card 2: Query Parameters -->
+        <div class="doc-card" style="grid-column: span 2;">
+          <h3>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Query Parameter Customizations</span>
+          </h3>
+          <p>Pass any combination of query parameters to <code>/api/circuit</code> or direct vanity routes:</p>
+          <table class="param-table">
+            <thead>
+              <tr>
+                <th>Param</th>
+                <th>Type</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>user</code></td>
+                <td>string</td>
+                <td><code>octocat</code></td>
+                <td>GitHub username (public profile)</td>
+              </tr>
+              <tr>
+                <td><code>year</code></td>
+                <td>string</td>
+                <td><code>last</code></td>
+                <td><code>last</code> (12 months) or specific year e.g. <code>2025</code></td>
+              </tr>
+              <tr>
+                <td><code>theme</code></td>
+                <td>string</td>
+                <td><code>breadboard</code></td>
+                <td><code>breadboard</code>, <code>pcb</code>, <code>cyberpunk</code>, <code>amber</code>, <code>matrix</code>, <code>solarized</code>, <code>monochrome</code></td>
+              </tr>
+              <tr>
+                <td><code>wireMode</code></td>
+                <td>string</td>
+                <td><code>hybrid</code></td>
+                <td><code>hybrid</code>, <code>jumper</code>, <code>pcb</code>, <code>bus</code>, <code>streak</code></td>
+              </tr>
+              <tr>
+                <td><code>nodeStyle</code></td>
+                <td>string</td>
+                <td><code>led</code></td>
+                <td><code>led</code>, <code>smd</code>, <code>pad</code>, <code>hex</code></td>
+              </tr>
+              <tr>
+                <td><code>density</code></td>
+                <td>1–4</td>
+                <td><code>2</code></td>
+                <td>Wire routing density: <code>1</code> (sparse) to <code>4</code> (ultra)</td>
+              </tr>
+              <tr>
+                <td><code>glow</code></td>
+                <td>0–100</td>
+                <td><code>70</code></td>
+                <td>Active node glow intensity percentage</td>
+              </tr>
+              <tr>
+                <td><code>speed</code></td>
+                <td>string</td>
+                <td><code>normal</code></td>
+                <td>GIF pulse speed: <code>slow</code>, <code>normal</code>, <code>fast</code></td>
+              </tr>
+              <tr>
+                <td><code>frames</code></td>
+                <td>8–16</td>
+                <td><code>10</code></td>
+                <td>Number of animated GIF loop frames</td>
+              </tr>
+              <tr>
+                <td><code>scale</code></td>
+                <td>1 or 2</td>
+                <td><code>1</code></td>
+                <td>Retina scaling multiplier for PNG output</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <span>COMMIT.CIRCUIT — Open Source Electronic Profile Art. Built with Fastify & Node.js.</span>
+      </div>
+      <div>
+        <span>Data provided by <a href="https://github-contributions-api.jogruber.de/" target="_blank" rel="noreferrer">GitHub Contributions API</a></span>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="/public/app.js"></script>
+</body>
+</html>
