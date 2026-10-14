@@ -6,9 +6,9 @@
   "main": "src/server.ts",
 "scripts": {
   "start": "node dist/server.js",
-  "dev": "tsx watch src/server.ts",
-  "build": "tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --outfile=dist/server.js",
-  "check": "tsc --noEmit",
+  "dev": "npx tsx watch src/server.ts",
+  "build": "npx tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --outfile=dist/server.js",
+  "check": "npx tsc --noEmit",
   "typecheck": "npm run check"
 },
   "keywords": [
