@@ -1,9 +1,11 @@
 services:
   - type: web
     name: circuit
-    runtime: docker
+    runtime: node
     plan: free
-    healthCheckPath: /api/health
+    buildCommand: bun install --frozen-lockfile
+    startCommand: bun run start
+    healthCheckPath: /
     envVars:
-      - key: NODE_ENV
-        value: production
+      - key: NODE_VERSION
+        value: 22
