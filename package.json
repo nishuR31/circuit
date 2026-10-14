@@ -4,13 +4,13 @@
   "description": "Dynamic GitHub Contribution Electronic Circuit Generator powered by Fastify and Bun",
   "type": "module",
   "main": "src/server.ts",
-"scripts": {
-  "start": "node dist/server.js",
-  "dev": "npx tsx watch src/server.ts",
- "build": "npx --no-install tsc --noEmit && npx --no-install esbuild src/server.ts --platform=node --format=esm --packages=external --outfile=build/server.js && mkdir -p dist && cp -r public/. dist/ && cp index.html dist/index.html",
-  "check": "npx tsc --noEmit",
-  "typecheck": "npm run check"
-},
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "npx tsx watch src/server.ts",
+    "build": "npx --no-install tsc --noEmit && npx --no-install esbuild src/server.ts --platform=node --format=esm --packages=external --outfile=build/server.js && mkdir -p dist && cp -r public/. dist/",
+    "check": "npx tsc --noEmit",
+    "typecheck": "npm run check"
+  },
   "keywords": [
     "github",
     "contributions",
