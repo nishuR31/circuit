@@ -41,7 +41,10 @@ async function buildServer(): Promise<FastifyInstance> {
   // Serve static assets from public/ directory
   await app.register(fastifyStatic, {
     root: publicDir,
-    prefix: '/public/'
+    prefix: '/public/',
+    setHeaders: (res) => {
+      res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+    }
   });
 
   // ==========================================
@@ -49,6 +52,7 @@ async function buildServer(): Promise<FastifyInstance> {
   // ==========================================
   app.get('/', async (_req: FastifyRequest, reply: FastifyReply) => {
     reply.type('text/html');
+    reply.header('Cache-Control', 'no-cache, no-store, must-revalidate');
     const indexPath = path.join(publicDir, 'index.html');
     return fs.readFileSync(indexPath, 'utf8');
   });
