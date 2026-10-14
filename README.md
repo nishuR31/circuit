@@ -79,19 +79,20 @@ The circuit employs an authentic electronics breadboard signal hierarchy where w
 ```html
 <a href="https://github.com/octocat">
   <img
-    src="http://localhost:3000/api/circuit.gif?user=octocat&theme=breadboard&wireMode=jumper&speed=fast"
+    src="https://circuit-g8ty.onrender.com/api/circuit.gif?user=octocat&theme=breadboard&wireMode=jumper&speed=fast"
     alt="Octocat Contribution Circuit"
     width="100%"
   />
 </a>
 ```
 
+
 #### 3. Direct URLs Examples 
 
-- **Animated GIF**: `http://localhost:3000/octocat.gif`
-- **Crisp Retina PNG**: `http://localhost:3000/octocat.png?scale=2`
-- **Scalable Vector SVG**: `http://localhost:3000/octocat.svg`
-- **JSON Telemetry Data**: `http://localhost:3000/api/data?user=octocat`
+- **Animated GIF**: `https://circuit-g8ty.onrender.com/octocat.gif`
+- **Crisp Retina PNG**: `https://circuit-g8ty.onrender.com/octocat.png?scale=2`
+- **Scalable Vector SVG**: `https://circuit-g8ty.onrender.com/octocat.svg`
+- **JSON Telemetry Data**: `https://circuit-g8ty.onrender.com/api/data?user=octocat`
 
 ---
 
