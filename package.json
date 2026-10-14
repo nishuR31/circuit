@@ -4,12 +4,12 @@
   "description": "Dynamic GitHub Contribution Electronic Circuit Generator powered by Fastify and Bun",
   "type": "module",
   "main": "src/server.ts",
-  "scripts": {
-    "start": "bun run src/server.ts",
-    "dev": "bun --watch src/server.ts",
-    "build": "bun build src/server.ts --outdir ./dist --target bun",
-    "check": "bun x tsc --noEmit"
-  },
+"scripts": {
+  "start": "node dist/server.js",
+  "dev": "tsx watch src/server.ts",
+  "build": "tsc --noEmit && esbuild src/server.ts --bundle --platform=node --format=esm --outfile=dist/server.js",
+  "check": "tsc --noEmit"
+},
   "keywords": ["github", "contributions", "circuit", "fastify", "bun", "typescript"],
   "author": "",
   "license": "MIT",
