@@ -5,11 +5,11 @@
   "type": "module",
   "main": "src/server.ts",
   "scripts": {
-    "start": "node dist/server.js",
-    "dev": "npx tsx watch src/server.ts",
-    "build": "npx --no-install tsc --noEmit && npx --no-install esbuild src/server.ts --platform=node --format=esm --packages=external --outfile=build/server.js && mkdir -p dist && cp -r public/. dist/",
-    "check": "npx tsc --noEmit",
-    "typecheck": "npm run check"
+    "start": "bun run src/server.ts",
+    "dev": "bun --watch src/server.ts",
+    "build": "bunx tsc --noEmit",
+    "check": "bunx tsc --noEmit",
+    "typecheck": "bun run check"
   },
   "keywords": [
     "github",

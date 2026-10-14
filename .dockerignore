@@ -1,0 +1,8 @@
+.git
+node_modules
+dist
+build
+*.bak
+.env
+.env.*
+!.env.example

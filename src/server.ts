@@ -136,3 +136,6 @@ async function start() {
 }
 
 export default start;
+
+// Start the Fastify server when executed by Bun.
+start();
